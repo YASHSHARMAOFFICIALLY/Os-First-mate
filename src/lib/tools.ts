@@ -36,15 +36,37 @@ export const toolDefinitions: ChatCompletionTool[] = [
       },
     },
   },
-
-  
-
-  // Tool 2: YOUR TURN — query_issues
-  // Copy the pattern above. Change: name, description, properties.
-  // This tool queries open issues. It takes owner, repo, and an optional label.
-
-  // Tool 3: YOUR TURN — query_pulls
-  // This tool queries recent pull requests. It takes owner and repo.
+  {
+    type: "function",
+    function: {
+      name: "query_issues",
+      description: "Queries GitHub repository issues. Classifies issues by level (good first issue, intermediate, expert). Returns issues sorted by newest first, with language required for each. Can filter by label.",
+      parameters: {
+        type: "object",
+        properties: {
+          owner: { type: "string", description: "GitHub repo owner, e.g. 'vercel'" },
+          repo: { type: "string", description: "GitHub repo name, e.g. 'next.js'" },
+          label: { type: "string", description: "Optional label to filter by, e.g. 'good first issue'" },
+        },
+        required: ["owner", "repo"],
+      },
+    },
+  },
+    {
+    type: "function",
+    function: {
+      name: "query_pulls",
+      description: "Queries GitHub repository pulls all open and close pull made by the owner . Return the pull made by owner into closed and open , if any mainatiner ask for review mention too if the pull is open .",
+      parameters: {
+        type: "object",
+        properties: {
+          owner: { type: "string", description: "GitHub repo owner, e.g. 'vercel'" },
+          repo: { type: "string", description: "GitHub repo name, e.g. 'next.js'" },
+        },
+        required: ["owner", "repo"],
+      },
+    },
+  },
 ];
 
 // TOOL EXECUTOR
@@ -61,18 +83,24 @@ export async function executeTool(
   switch (name) {
     // Case 1: DONE FOR YOU
     case "query_repo_info": {
-      const sql = `SELECT name, description, stargazers_count, language, open_issues_count, license FROM github.repos WHERE owner='${owner}' AND name='${repo}'`;
+      const sql = `SELECT name, description, stargazers_count, language, open_issues_count, license__spdx_id, pushed_at, has_issues FROM github.repos_get WHERE owner='${owner}' AND repo='${repo}'`;
       return await runCoralQuery(sql);
     }
 
-    // Case 2: YOUR TURN — "query_issues"
-    // SQL: SELECT number, title, labels, created_at, comments FROM github.issues
-    //      WHERE owner='${owner}' AND repo='${repo}' AND state='open' LIMIT 20
-    // Bonus: if args.label exists, add AND labels LIKE '%${label}%'
+    case "query_issues": {
+      let sql = `SELECT number, title, labels, created_at, comments FROM github.issues WHERE owner='${owner}' AND repo='${repo}' AND state='open'`;
+      if (args.label) {
+        const label = String(args.label).replace(/[^a-zA-Z0-9 _-]/g, "");
+        sql += ` AND labels LIKE '%${label}%'`;
+      }
+      sql += ` LIMIT 20`;
+      return await runCoralQuery(sql);
+    }
 
-    // Case 3: YOUR TURN — "query_pulls"
-    // SQL: SELECT number, title, state, created_at, user_login FROM github.pulls
-    //      WHERE owner='${owner}' AND repo='${repo}' ORDER BY created_at DESC LIMIT 10
+    case "query_pulls": {
+      const sql = `SELECT number, title, state, created_at, merged_at FROM github.pulls WHERE owner='${owner}' AND repo='${repo}' ORDER BY created_at DESC LIMIT 10`;
+      return await runCoralQuery(sql);
+    }
 
     default:
       return JSON.stringify({ error: `Unknown tool: ${name}` });

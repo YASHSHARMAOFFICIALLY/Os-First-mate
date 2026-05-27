@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-space-grotesk), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), monospace;
+}
+
+.brutal-border {
+  border: 3px solid #000;
+}
+
+.brutal-shadow {
+  box-shadow: 4px 4px 0px #000;
+}
+
+.brutal-shadow-sm {
+  box-shadow: 2px 2px 0px #000;
+}
+
+.brutal-hover {
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.brutal-hover:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px #000;
+}
+
+.brutal-hover:active {
+  transform: translate(0px, 0px);
+  box-shadow: 2px 2px 0px #000;
+}
+
+.border-3 {
+  border-width: 3px;
+}
+
+.border-t-3 {
+  border-top-width: 3px;
+}
+
+.border-b-3 {
+  border-bottom-width: 3px;
+}
+
+.border-r-3 {
+  border-right-width: 3px;
+}
+
+.border-l-3 {
+  border-left-width: 3px;
+}

@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 const steps = [
   {
-    number: "01",
+    number: ">> 00:01",
     title: "Paste any GitHub repo",
     description: "Enter an owner/repo and hit Load. Works with any public repository.",
     mockup: (
@@ -22,7 +22,7 @@ const steps = [
     direction: { initial: { opacity: 0, x: -60 }, animate: { opacity: 1, x: 0 } },
   },
   {
-    number: "02",
+    number: ">> 00:03",
     title: "AI agents get to work",
     description: "Agents query your repo, analyze patterns, and process every issue.",
     mockup: (
@@ -45,7 +45,7 @@ const steps = [
     direction: { initial: { opacity: 0, y: 60 }, animate: { opacity: 1, y: 0 } },
   },
   {
-    number: "03",
+    number: ">> 00:05",
     title: "Get actionable results",
     description: "Labels, priorities, duplicates, release notes — ready in seconds.",
     mockup: (
@@ -72,10 +72,10 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section id="how-it-works" className="bg-white border-b-3 border-black py-20 px-6">
+    <section id="how-it-works" className="bg-dots bg-white border-b-3 border-black py-20 px-6">
       <div className="max-w-4xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-black text-center mb-16">How it works</h2>
-        <div className="space-y-20">
+        <h2 className="font-display text-3xl md:text-4xl font-black text-center mb-16">Captain&apos;s Log</h2>
+        <div className="relative border-l-3 border-black ml-6 md:ml-12">
           {steps.map((step, i) => (
             <motion.div
               key={step.number}
@@ -83,19 +83,18 @@ export function HowItWorks() {
               whileInView={step.direction.animate}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className="flex flex-col md:flex-row items-center gap-8"
+              className={`relative pl-8 pb-16 ${i % 2 === 0 ? "md:ml-0" : "md:ml-8"}`}
             >
-              <div className="flex-1 space-y-3">
-                <div
-                  className="inline-flex items-center justify-center w-12 h-12 bg-cyan-300 border-3 border-black font-black text-lg"
-                  style={{ boxShadow: "3px 3px 0 #000" }}
-                >
-                  {step.number}
+              {/* Timeline dot */}
+              <div className="absolute -left-[9px] top-0 w-4 h-4 bg-black rounded-full" />
+              <div className="flex flex-col md:flex-row items-center gap-8">
+                <div className="flex-1 space-y-3">
+                  <div className="font-mono text-sm font-bold text-gray-500">{step.number}</div>
+                  <h3 className="font-display text-xl font-bold">{step.title}</h3>
+                  <p className="text-gray-600">{step.description}</p>
                 </div>
-                <h3 className="text-xl font-bold">{step.title}</h3>
-                <p className="text-gray-600">{step.description}</p>
+                <div className="flex-1 w-full">{step.mockup}</div>
               </div>
-              <div className="flex-1 w-full">{step.mockup}</div>
             </motion.div>
           ))}
         </div>

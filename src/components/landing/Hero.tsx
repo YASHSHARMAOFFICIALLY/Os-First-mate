@@ -7,7 +7,7 @@ function AppPreview() {
     <motion.div
       initial={{ opacity: 0, x: 40, rotate: -3 }}
       animate={{ opacity: 1, x: 0, rotate: -1 }}
-      transition={{ duration: 0.6, delay: 0.3 }}
+      transition={{ duration: 0.6, delay: 0.5 }}
       className="bg-white border-3 border-black"
       style={{ boxShadow: "8px 8px 0 #000", transform: "rotate(-1deg)" }}
     >
@@ -48,28 +48,45 @@ function AppPreview() {
 
 export function Hero() {
   return (
-    <section className="bg-cyan-300 border-b-3 border-black">
+    <section className="bg-cyan-300 bg-noise border-b-3 border-black">
       <div className="max-w-6xl mx-auto px-6 py-16 md:py-24 flex flex-col md:flex-row items-center gap-12">
         {/* Left: Copy */}
-        <motion.div
-          initial={{ opacity: 0, x: -30 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5 }}
-          className="flex-1 space-y-6"
-        >
-          <span className="inline-block bg-yellow-400 border-2 border-black px-3 py-1 text-xs font-bold uppercase tracking-wide"
+        <div className="flex-1 space-y-6">
+          <motion.span
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0 }}
+            className="inline-block bg-yellow-400 border-2 border-black px-3 py-1 text-xs font-bold uppercase tracking-wide"
             style={{ boxShadow: "2px 2px 0 #000" }}
           >
             Hackathon Project ⚡
-          </span>
-          <h1 className="text-4xl md:text-5xl font-black leading-[1.05] tracking-tight">
-            Your Repo&apos;s<br />AI First Mate.
-          </h1>
-          <p className="text-base md:text-lg text-gray-800 max-w-md leading-relaxed">
+          </motion.span>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.15 }}
+            className="relative"
+          >
+            <div className="absolute -left-4 top-2 w-32 h-32 bg-yellow-400 border-3 border-black -z-10 rotate-3" />
+            <h1 className="text-4xl md:text-5xl font-black font-display leading-[1.05] tracking-tight">
+              Your Repo&apos;s<br />AI First Mate.
+            </h1>
+          </motion.div>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.25 }}
+            className="text-base md:text-lg text-gray-800 max-w-md leading-relaxed"
+          >
             Triage, duplicates, release notes — all from one command center.
             Powered by AI agents that actually read your issues.
-          </p>
-          <div className="flex flex-wrap gap-3">
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.35 }}
+            className="flex flex-wrap gap-3"
+          >
             <a
               href="/api/auth/signin/github"
               className="bg-black text-cyan-300 px-6 py-3 font-bold text-sm border-3 border-black brutal-hover"
@@ -86,11 +103,11 @@ export function Hero() {
             >
               View on GitHub ↗
             </a>
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
 
         {/* Right: App preview */}
-        <div className="flex-1 max-w-md w-full">
+        <div className="flex-1 max-w-md w-full md:translate-y-12">
           <AppPreview />
         </div>
       </div>

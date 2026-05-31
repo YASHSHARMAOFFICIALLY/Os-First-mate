@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { signIn } from "next-auth/react";
 
 export function CTAFooter() {
   return (
@@ -12,14 +13,15 @@ export function CTAFooter() {
         transition={{ duration: 0.5 }}
         className="max-w-4xl mx-auto text-center space-y-8"
       >
-        <h2 className="text-3xl md:text-4xl font-black">Ready to triage smarter?</h2>
-        <a
-          href="/api/auth/signin/github"
+        <h2 className="text-3xl md:text-4xl font-black font-display">Ready to triage smarter?</h2>
+        <button
+          type="button"
+          onClick={() => signIn("github", { callbackUrl: "/dashboard" })}
           className="inline-block bg-cyan-300 text-black px-8 py-4 font-bold text-lg border-3 border-black brutal-hover"
           style={{ boxShadow: "6px 6px 0 #000" }}
         >
           Sign in with GitHub
-        </a>
+        </button>
         <div>
           <a
             href="https://github.com/yashsharma/os-first-mate"

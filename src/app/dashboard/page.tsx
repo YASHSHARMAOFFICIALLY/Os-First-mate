@@ -4,12 +4,13 @@ import { useState } from "react";
 import { Tab } from "@/lib/types";
 import { TabBar } from "@/components/TabBar";
 import { RepoSelector } from "@/components/RepoSelector";
+import { BriefPanel } from "@/components/brief/BriefPanel";
 import { TriagePanel } from "@/components/triage/TriagePanel";
-import { DuplicatePanel } from "@/components/duplicates/DuplicatePanel";
+import { ContributorPanel } from "@/components/contributors/ContributorPanel";
 import { ReleasePanel } from "@/components/releases/ReleasePanel";
 
 export default function Dashboard() {
-  const [activeTab, setActiveTab] = useState<Tab>("triage");
+  const [activeTab, setActiveTab] = useState<Tab>("brief");
   const [owner, setOwner] = useState("");
   const [repo, setRepo] = useState("");
 
@@ -51,15 +52,16 @@ export default function Dashboard() {
             <div className="text-center space-y-3 p-8">
               <p className="text-5xl font-bold">Ahoy!</p>
               <p className="text-gray-600 max-w-md text-lg">
-                Enter a GitHub repo above to start triaging issues,
-                detecting duplicates, and generating release notes.
+                Enter a GitHub repo above to get your daily maintainer brief,
+                triage issues, analyze project health, and generate release notes.
               </p>
             </div>
           </div>
         ) : (
           <>
+            {activeTab === "brief" && <BriefPanel owner={owner} repo={repo} />}
             {activeTab === "triage" && <TriagePanel owner={owner} repo={repo} />}
-            {activeTab === "duplicates" && <DuplicatePanel owner={owner} repo={repo} />}
+            {activeTab === "health" && <ContributorPanel owner={owner} repo={repo} />}
             {activeTab === "releases" && <ReleasePanel owner={owner} repo={repo} />}
           </>
         )}

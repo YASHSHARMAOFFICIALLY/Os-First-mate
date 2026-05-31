@@ -2,23 +2,17 @@ import { NextRequest, NextResponse } from "next/server";
 import { openai, MODEL } from "@/lib/openai";
 import { toolDefinitions, executeTool } from "@/lib/tools";
 
-const SYSTEM_PROMPT = `You are OS First Mate, a helpful AI assistant that helps developers find and prepare for open source contributions.
+const SYSTEM_PROMPT = `You are OS First Mate, an AI assistant for open source maintainers.
 
-When a user provides a GitHub repository:
-1. First query the repo info to assess its health and activity
-2. Then find beginner-friendly issues if asked
-3. Query pull requests to gauge how active the maintainers are
+You help with:
+- Issue triage: suggesting labels, priority, and assignees for open issues
+- Duplicate detection: finding semantically similar issues
+- Release notes: generating changelogs from merged PRs
+- General repo analysis: answering questions about issues, PRs, and releases
 
-When ranking issues for beginners, consider:
-- Labels like "good first issue", "beginner", "help wanted"
-- How recently the issue was created (newer = more relevant)
-- Number of comments (fewer = less complex)
-
-If the user mentions their skills, match issues to those skills based on the repo's language and issue content.
-
-Be encouraging but honest. If a repo looks inactive or unfriendly to contributors, say so.
+You have tools to query GitHub data via Coral SQL. Use them to answer questions with real data.
 Keep responses concise and actionable. Use markdown formatting.
-Always mention the issue number and title when recommending issues.`;
+Always reference issue/PR numbers when discussing specific items.`;
 
 const MAX_TOOL_ITERATIONS = 5;
 

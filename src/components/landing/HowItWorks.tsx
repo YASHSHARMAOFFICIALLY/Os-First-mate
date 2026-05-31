@@ -24,7 +24,7 @@ const steps = [
   {
     number: ">> 00:03",
     title: "AI agents get to work",
-    description: "Agents query your repo, analyze patterns, and process every issue.",
+    description: "Agents query your repo via Coral SQL, analyze patterns, and process every issue.",
     mockup: (
       <div className="bg-white border-3 border-black p-4 space-y-2" style={{ boxShadow: "4px 4px 0 #000" }}>
         <p className="text-xs font-bold uppercase tracking-wide text-gray-500">Agent Steps</p>
@@ -35,10 +35,14 @@ const steps = [
           <span>✓</span><span className="text-gray-600">Analyzed label patterns</span>
         </div>
         <div className="flex items-center gap-2 text-sm font-mono">
-          <span>✓</span><span className="text-gray-600">Compared for duplicates</span>
+          <span>✓</span><span className="text-gray-600">Analyzed contributor patterns</span>
         </div>
         <div className="flex items-center gap-2 text-sm font-mono">
           <span className="animate-spin">⟳</span><span className="font-bold">Generating triage results...</span>
+        </div>
+        <div className="bg-gray-900 text-gray-100 mt-1 p-1.5 border border-gray-700">
+          <span className="text-[8px] font-bold text-cyan-400">CORAL SQL</span>
+          <span className="text-[8px] font-mono text-gray-400 ml-2">SELECT ... FROM github.issues</span>
         </div>
       </div>
     ),
@@ -47,7 +51,7 @@ const steps = [
   {
     number: ">> 00:05",
     title: "Get actionable results",
-    description: "Labels, priorities, duplicates, release notes — ready in seconds.",
+    description: "Labels, priorities, contributor insights, release notes — ready in seconds.",
     mockup: (
       <div className="bg-white border-3 border-black p-4 space-y-2" style={{ boxShadow: "4px 4px 0 #000" }}>
         <div className="border-3 border-black p-3 flex justify-between items-center">

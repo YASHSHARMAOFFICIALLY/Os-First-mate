@@ -14,7 +14,7 @@ export function BuiltWith() {
   return (
     <section className="bg-yellow-400 bg-noise border-b-3 border-black py-16 px-6">
       <div className="max-w-4xl mx-auto text-center">
-        <h2 className="text-2xl font-black font-display mb-8">Ship's Manifest</h2>
+        <h2 className="text-2xl font-black font-display mb-8">Ship&apos;s Manifest</h2>
         <div className="flex justify-center items-end">
           {tech.map((item, i) => (
             <motion.div
@@ -34,7 +34,7 @@ export function BuiltWith() {
             </motion.div>
           ))}
         </div>
-        <p className="mt-6 text-sm font-bold">Built for Pirates of the Coral-Bean Hackathon</p>
+        <p className="mt-6 text-sm font-bold">Built for the Coral Hackathon</p>
       </div>
     </section>
   );

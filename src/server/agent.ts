@@ -1,6 +1,8 @@
 import { openai, MODEL } from "./openai";
-import { toolDefinitions, executeTool } from "./tools";
-import { AgentStep } from "./types";
+import { toolDefinitions, executeTool } from "./github/tools";
+import { AgentStep } from "@/types/agent";
+import { errorMessage } from "@/server/errors";
+import type { ChatCompletionMessageParam } from "openai/resources/chat/completions";
 
 const MAX_ITERATIONS = 1;
 
@@ -28,7 +30,7 @@ export async function runAgent(
   systemPrompt: string,
   userMessage: string
 ): Promise<AgentResult> {
-  const messages: any[] = [
+  const messages: ChatCompletionMessageParam[] = [
     { role: "system", content: systemPrompt },
     { role: "user", content: userMessage },
   ];
@@ -97,7 +99,7 @@ export function runAgentStream(
       }
 
       try {
-        const messages: any[] = [
+        const messages: ChatCompletionMessageParam[] = [
           { role: "system", content: systemPrompt },
           { role: "user", content: userMessage },
         ];
@@ -154,8 +156,8 @@ export function runAgentStream(
 
         const content = response.choices[0]?.message?.content ?? "";
         send("result", { content });
-      } catch (error: any) {
-        send("error", { message: error.message || "Agent failed" });
+      } catch (error: unknown) {
+        send("error", { message: errorMessage(error, "Agent failed") });
       } finally {
         controller.close();
       }

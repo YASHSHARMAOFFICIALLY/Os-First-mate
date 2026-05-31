@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { AgentStep } from "@/lib/types";
+import { AgentStep } from "@/types/agent";
 
 interface AgentStepsProps {
   steps: AgentStep[];

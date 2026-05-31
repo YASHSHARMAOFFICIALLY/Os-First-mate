@@ -1,6 +1,6 @@
 "use client";
 
-import { Tab } from "@/lib/types";
+import { Tab } from "@/types/navigation";
 
 interface TabBarProps {
   activeTab: Tab;

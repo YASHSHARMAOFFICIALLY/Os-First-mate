@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useAgentStream } from "@/hooks/useAgentStream";
-import { AgentSteps } from "../AgentSteps";
-import { CoralEvidence } from "../CoralEvidence";
+import { AgentSteps } from "@/components/shared/AgentSteps";
+import { CoralEvidence } from "@/components/shared/CoralEvidence";
 
 interface ReleasePanelProps {
   owner: string;

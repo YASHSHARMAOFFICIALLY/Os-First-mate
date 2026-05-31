@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useAgentStream } from "@/hooks/useAgentStream";
-import { AgentSteps } from "../AgentSteps";
-import { CoralEvidence } from "../CoralEvidence";
-import { TriageResult } from "@/lib/types";
+import { AgentSteps } from "@/components/shared/AgentSteps";
+import { CoralEvidence } from "@/components/shared/CoralEvidence";
+import { TriageResult } from "./types";
 
 interface TriagePanelProps {
   owner: string;

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useAgentStream } from "@/hooks/useAgentStream";
-import { AgentSteps } from "../AgentSteps";
+import { AgentSteps } from "@/components/shared/AgentSteps";
 
 interface DuplicatePanelProps {
   owner: string;

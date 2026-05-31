@@ -1,6 +1,7 @@
 import { execFile } from "child_process";
 import { promisify } from "util";
 import type { ChatCompletionTool } from "openai/resources/chat/completions";
+import { errorMessage, processErrorMessage } from "@/server/errors";
 
 const execFileAsync = promisify(execFile);
 const CORAL_BIN = process.env.CORAL_BIN || "/opt/homebrew/bin/coral";
@@ -17,8 +18,8 @@ async function runCoralQuery(sql: string): Promise<string> {
       },
     });
     return stdout.trim();
-  } catch (error: any) {
-    const message = error.stderr?.trim() || error.stdout?.trim() || error.message || "Coral query failed";
+  } catch (error: unknown) {
+    const message = processErrorMessage(error, "Coral query failed");
     console.error("[coral]", message);
     throw new Error(message);
   }
@@ -53,10 +54,10 @@ async function runQuery(sql: string, fallback?: () => Promise<unknown>): Promise
     const result = await runCoralQuery(sql);
     lastTrace = { sql, table, source: "coral", rowCount: countRows(result) };
     return result;
-  } catch (error: any) {
+  } catch (error: unknown) {
     if (!fallback) {
       lastTrace = { sql, table, source: "coral", rowCount: 0 };
-      return JSON.stringify({ error: error.message || "Query failed" });
+      return JSON.stringify({ error: errorMessage(error, "Query failed") });
     }
 
     try {
@@ -64,11 +65,11 @@ async function runQuery(sql: string, fallback?: () => Promise<unknown>): Promise
       const result = JSON.stringify(await fallback());
       lastTrace = { sql, table, source: "github-rest", rowCount: countRows(result) };
       return result;
-    } catch (fallbackError: any) {
-      const message = fallbackError.message || "GitHub fallback failed";
+    } catch (fallbackError: unknown) {
+      const message = errorMessage(fallbackError, "GitHub fallback failed");
       console.error("[github-fallback]", message);
       lastTrace = { sql, table, source: "github-rest", rowCount: 0 };
-      return JSON.stringify({ error: `${error.message || "Coral query failed"}; fallback: ${message}` });
+      return JSON.stringify({ error: `${errorMessage(error, "Coral query failed")}; fallback: ${message}` });
     }
   }
 }

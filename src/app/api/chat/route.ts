@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { openai, MODEL } from "@/lib/openai";
-import { toolDefinitions, executeTool } from "@/lib/tools";
+import { openai, MODEL } from "@/server/openai";
+import { toolDefinitions, executeTool } from "@/server/github/tools";
+import { errorMessage } from "@/server/errors";
+import type { ChatCompletionMessageParam } from "openai/resources/chat/completions";
 
 const SYSTEM_PROMPT = `You are OS First Mate, an AI assistant for open source maintainers.
 
@@ -16,11 +18,17 @@ Always reference issue/PR numbers when discussing specific items.`;
 
 const MAX_TOOL_ITERATIONS = 5;
 
+interface ChatRequestBody {
+  messages: { role: "user" | "assistant"; content: string }[];
+  repoContext?: string;
+  skills?: string[];
+}
+
 export async function POST(req: NextRequest) {
   try {
-    const { messages, repoContext, skills } = await req.json();
+    const { messages, repoContext, skills } = (await req.json()) as ChatRequestBody;
 
-    const openaiMessages: any[] = [
+    const openaiMessages: ChatCompletionMessageParam[] = [
       { role: "system", content: SYSTEM_PROMPT },
     ];
 
@@ -74,10 +82,10 @@ export async function POST(req: NextRequest) {
     const content = response.choices[0]?.message?.content ?? "";
 
     return NextResponse.json({ content, citations: [] });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Chat API error:", error);
     return NextResponse.json(
-      { error: error.message || "Failed to generate response" },
+      { error: errorMessage(error, "Failed to generate response") },
       { status: 500 }
     );
   }

@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
-import { openai, MODEL } from "@/lib/openai";
-import { executeTool, getLastTrace } from "@/lib/tools";
+import { openai, MODEL } from "@/server/openai";
+import { executeTool, getLastTrace } from "@/server/github/tools";
+import { errorMessage } from "@/server/errors";
 
 const SYSTEM_PROMPT = `You are a senior open source maintainer's daily briefing system.
 
@@ -135,8 +136,8 @@ export async function POST(req: NextRequest) {
 
           send("step", { tool: "synthesize_brief", description: "Generating maintainer brief", status: "done" });
           send("result", { content: response.choices[0]?.message?.content ?? "" });
-        } catch (error: any) {
-          send("error", { message: error.message || "Brief generation failed" });
+        } catch (error: unknown) {
+          send("error", { message: errorMessage(error, "Brief generation failed") });
         } finally {
           controller.close();
         }
@@ -150,7 +151,7 @@ export async function POST(req: NextRequest) {
         Connection: "keep-alive",
       },
     });
-  } catch (error: any) {
-    return new Response(JSON.stringify({ error: error.message }), { status: 500 });
+  } catch (error: unknown) {
+    return new Response(JSON.stringify({ error: errorMessage(error, "Brief generation failed") }), { status: 500 });
   }
 }

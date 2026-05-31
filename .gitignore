@@ -5,6 +5,7 @@
 /docs
 /.pnp
 .pnp.*
+.superpowers/
 .yarn/*
 !.yarn/patches
 !.yarn/plugins

@@ -1,9 +1,9 @@
-import { Navbar } from "@/components/landing/Navbar";
-import { Hero } from "@/components/landing/Hero";
-import { HowItWorks } from "@/components/landing/HowItWorks";
-import { FeatureSections } from "@/components/landing/FeatureSection";
-import { BuiltWith } from "@/components/landing/BuiltWith";
-import { CTAFooter } from "@/components/landing/CTAFooter";
+import { Navbar } from "@/features/landing/Navbar";
+import { Hero } from "@/features/landing/Hero";
+import { HowItWorks } from "@/features/landing/HowItWorks";
+import { FeatureSections } from "@/features/landing/FeatureSection";
+import { BuiltWith } from "@/features/landing/BuiltWith";
+import { CTAFooter } from "@/features/landing/CTAFooter";
 
 export default function Home() {
   return (

@@ -1,0 +1,19 @@
+<svg width="1200" height="520" viewBox="0 0 1200 520" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="520" fill="#07111F"/>
+  <rect x="42" y="42" width="1116" height="436" rx="28" fill="#0D1B2E" stroke="#FF6F61" stroke-width="4"/>
+  <circle cx="172" cy="174" r="74" fill="#FF6F61"/>
+  <circle cx="172" cy="174" r="42" fill="#07111F"/>
+  <path d="M172 84C232 84 280 132 280 192C280 252 232 300 172 300C112 300 64 252 64 192" stroke="#FFD166" stroke-width="18" stroke-linecap="round"/>
+  <path d="M135 365C191 315 267 325 310 379" stroke="#2EC4B6" stroke-width="18" stroke-linecap="round"/>
+  <path d="M82 346C135 279 240 274 320 335" stroke="#FF6F61" stroke-width="18" stroke-linecap="round"/>
+  <text x="392" y="162" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-size="64" font-weight="800">Coral-Powered</text>
+  <text x="392" y="232" fill="#FFD166" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="700">Open Source Maintainer Intelligence</text>
+  <text x="392" y="302" fill="#D8E2F0" font-family="Arial, Helvetica, sans-serif" font-size="28">SQL-backed GitHub analysis for briefs, triage, contributor health,</text>
+  <text x="392" y="340" fill="#D8E2F0" font-family="Arial, Helvetica, sans-serif" font-size="28">duplicate detection, and release notes.</text>
+  <rect x="392" y="384" width="206" height="54" rx="10" fill="#FF6F61"/>
+  <text x="426" y="420" fill="#07111F" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="800">Coral SQL</text>
+  <rect x="620" y="384" width="202" height="54" rx="10" fill="#2EC4B6"/>
+  <text x="654" y="420" fill="#07111F" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="800">GitHub Data</text>
+  <rect x="844" y="384" width="190" height="54" rx="10" fill="#FFD166"/>
+  <text x="883" y="420" fill="#07111F" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="800">AI Agent</text>
+</svg>

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { CoralTrace } from "@/lib/types";
+import { CoralTrace } from "@/types/agent";
 
 interface CoralEvidenceProps {
   traces: CoralTrace[];

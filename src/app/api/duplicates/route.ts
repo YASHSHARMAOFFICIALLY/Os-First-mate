@@ -1,5 +1,6 @@
 import { NextRequest } from "next/server";
-import { runAgentStream } from "@/lib/agent";
+import { runAgentStream } from "@/server/agent";
+import { errorMessage } from "@/server/errors";
 
 const SYSTEM_PROMPT = `You are a duplicate issue detector for open source repos.
 
@@ -36,7 +37,7 @@ export async function POST(req: NextRequest) {
         Connection: "keep-alive",
       },
     });
-  } catch (error: any) {
-    return new Response(JSON.stringify({ error: error.message }), { status: 500 });
+  } catch (error: unknown) {
+    return new Response(JSON.stringify({ error: errorMessage(error, "Duplicate scan failed") }), { status: 500 });
   }
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { AgentStep, CoralTrace } from "@/lib/types";
+import { AgentStep, CoralTrace } from "@/types/agent";
 
 interface UseAgentStreamReturn {
   steps: AgentStep[];

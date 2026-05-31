@@ -1,13 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { Tab } from "@/lib/types";
-import { TabBar } from "@/components/TabBar";
-import { RepoSelector } from "@/components/RepoSelector";
-import { BriefPanel } from "@/components/brief/BriefPanel";
-import { TriagePanel } from "@/components/triage/TriagePanel";
-import { ContributorPanel } from "@/components/contributors/ContributorPanel";
-import { ReleasePanel } from "@/components/releases/ReleasePanel";
+import { Tab } from "@/types/navigation";
+import { TabBar } from "@/components/shared/TabBar";
+import { RepoSelector } from "@/components/shared/RepoSelector";
+import { BriefPanel } from "@/features/brief/BriefPanel";
+import { TriagePanel } from "@/features/triage/TriagePanel";
+import { ContributorPanel } from "@/features/contributors/ContributorPanel";
+import { ReleasePanel } from "@/features/releases/ReleasePanel";
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState<Tab>("brief");

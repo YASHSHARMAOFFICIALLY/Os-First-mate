@@ -75,11 +75,12 @@ export function Hero() {
             transition={{ duration: 0.5, delay: 0.15 }}
             className="relative"
           >
-            <div className="absolute -left-4 top-2 w-32 h-32 bg-black border-3 border-black -z-10 rotate-3" />
             <h1 className="text-4xl md:text-5xl font-black font-display leading-[1.05] tracking-tight">
               Your Repo&apos;s
               <br />
-              AI First Mate.
+              <span className="decoration-cyan-300 decoration-4 underline underline-offset-4">
+                AI First Mate.
+              </span>
             </h1>
           </motion.div>
           <motion.p

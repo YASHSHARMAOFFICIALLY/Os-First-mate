@@ -11,15 +11,21 @@ interface ReleasePanelProps {
   repo: string;
 }
 
+function highlightText(text: string): React.ReactNode[] {
+  const parts = text.split(/(#\d+|@\w+)/g);
+  return parts.map((part, j) => {
+    if (part.match(/^#\d+$/)) return <span key={j} className="font-mono text-xs font-bold text-blue-600">{part}</span>;
+    if (part.match(/^@\w+$/)) return <span key={j} className="font-semibold">{part}</span>;
+    return <span key={j}>{part}</span>;
+  });
+}
+
 function renderMarkdownLine(line: string, i: number) {
   if (line.startsWith("### ")) return <h4 key={i} className="font-bold text-sm mt-4 mb-1 text-orange-600">{line.slice(4)}</h4>;
   if (line.startsWith("## ")) return <h3 key={i} className="font-bold text-base mt-2 mb-2">{line.slice(3)}</h3>;
   if (line.startsWith("> ")) return <p key={i} className="text-sm text-gray-600 brutal-border bg-yellow-50 px-3 py-2 mb-3">{line.slice(2)}</p>;
   if (line.startsWith("- ")) {
-    const text = line.slice(2);
-    const highlighted = text.replace(/(#\d+)/g, '<span class="font-mono text-xs font-bold text-blue-600">$1</span>')
-      .replace(/(@\w+)/g, '<span class="font-semibold">$1</span>');
-    return <li key={i} className="text-sm ml-4 list-disc text-gray-700" dangerouslySetInnerHTML={{ __html: highlighted }} />;
+    return <li key={i} className="text-sm ml-4 list-disc text-gray-700">{highlightText(line.slice(2))}</li>;
   }
   if (line.trim() === "") return <div key={i} className="h-2" />;
   return <p key={i} className="text-sm text-gray-700">{line}</p>;

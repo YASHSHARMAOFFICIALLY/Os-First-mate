@@ -33,6 +33,19 @@ function similarityColor(score: number): string {
   return "bg-gray-300";
 }
 
+function IssueLink({ number, owner, repo }: { number: number; owner: string; repo: string }) {
+  return (
+    <a
+      href={`https://github.com/${owner}/${repo}/issues/${number}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="font-mono text-xs text-blue-600 hover:underline"
+    >
+      #{number}
+    </a>
+  );
+}
+
 export function DuplicatePanel({ owner, repo }: DuplicatePanelProps) {
   const [issueNumber, setIssueNumber] = useState("");
   const { steps, content, loading, error, run } = useAgentStream();
@@ -110,7 +123,7 @@ export function DuplicatePanel({ owner, repo }: DuplicatePanelProps) {
             {/* Target issue */}
             <div className="brutal-border bg-yellow-100 p-4">
               <span className="font-mono text-xs text-gray-500">Target</span>
-              <p className="font-bold">#{results.target.number} — {results.target.title}</p>
+              <p className="font-bold"><IssueLink number={results.target.number} owner={owner} repo={repo} /> — {results.target.title}</p>
             </div>
 
             {/* Verdict */}
@@ -131,7 +144,7 @@ export function DuplicatePanel({ owner, repo }: DuplicatePanelProps) {
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <span className="font-mono text-xs text-gray-500">#{match.issueNumber}</span>
+                    <IssueLink number={match.issueNumber} owner={owner} repo={repo} />
                     <p className="font-bold text-sm">{match.title}</p>
                   </div>
                   <span className="text-lg font-bold">{match.similarity}%</span>

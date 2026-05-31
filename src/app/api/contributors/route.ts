@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 import { openai, MODEL } from "@/server/openai";
-import { executeTool, getLastTrace } from "@/server/github/tools";
+import { executeTool } from "@/server/github/tools";
 import { errorMessage } from "@/server/errors";
 
 const SYSTEM_PROMPT = `You are a project health analyst for open source maintainers.
@@ -99,10 +99,9 @@ export async function POST(req: NextRequest) {
           const results = await Promise.all(tasks.map(async (task) => {
             send("step", { tool: task.tool, description: task.description, status: "running" });
             const result = await task.run();
-            const trace = getLastTrace();
             send("step", { tool: task.tool, description: task.description, status: "done" });
-            if (trace) send("trace", { tool: task.tool, ...trace });
-            return [task.tool, result] as const;
+            send("trace", { tool: task.tool, ...result.trace });
+            return [task.tool, result.data] as const;
           }));
 
           send("step", { tool: "synthesize_health", description: "Generating project health report", status: "running" });

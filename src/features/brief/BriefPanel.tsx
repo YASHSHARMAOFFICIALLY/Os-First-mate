@@ -39,6 +39,19 @@ function parseBrief(content: string): RepoBrief | null {
   return null;
 }
 
+function IssueLink({ number, owner, repo }: { number: number; owner: string; repo: string }) {
+  return (
+    <a
+      href={`https://github.com/${owner}/${repo}/issues/${number}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="font-mono text-xs text-blue-600 hover:underline"
+    >
+      #{number}
+    </a>
+  );
+}
+
 function CopyButton({ text, label }: { text: string; label: string }) {
   const [copied, setCopied] = useState(false);
   return (
@@ -188,7 +201,7 @@ export function BriefPanel({ owner, repo }: BriefPanelProps) {
                     <div key={issue.number} className="brutal-border p-3 space-y-2">
                       <div className="flex items-start justify-between gap-2">
                         <div>
-                          <span className="font-mono text-xs text-gray-400">#{issue.number}</span>
+                          <IssueLink number={issue.number} owner={owner} repo={repo} />
                           <p className="font-bold text-sm">{issue.title}</p>
                         </div>
                         <span className={`px-2 py-0.5 text-xs font-bold border-2 border-black ${PRIORITY_COLORS[issue.priority] || "bg-gray-200"}`}>

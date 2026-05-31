@@ -1,1 +1,1 @@
-export type Tab = "brief" | "triage" | "health" | "releases";
+export type Tab = "brief" | "triage" | "health" | "releases" | "duplicates";

@@ -42,6 +42,19 @@ function buildCliCommand(item: TriageResult, owner: string, repo: string): strin
   return parts.join(" ");
 }
 
+function IssueLink({ number, owner, repo }: { number: number; owner: string; repo: string }) {
+  return (
+    <a
+      href={`https://github.com/${owner}/${repo}/issues/${number}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="font-mono text-xs text-blue-600 hover:underline"
+    >
+      #{number}
+    </a>
+  );
+}
+
 export function TriagePanel({ owner, repo }: TriagePanelProps) {
   const { steps, traces, content, loading, error, run } = useAgentStream();
   const [expandedResponse, setExpandedResponse] = useState<number | null>(null);
@@ -148,7 +161,7 @@ export function TriagePanel({ owner, repo }: TriagePanelProps) {
                 >
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex-1">
-                      <span className="font-mono text-xs text-gray-400">#{item.issueNumber}</span>
+                      <IssueLink number={item.issueNumber} owner={owner} repo={repo} />
                       <h3 className="font-bold text-sm">{item.title}</h3>
                     </div>
                     <span className={`px-2 py-0.5 text-xs font-bold ${style.bg} ${style.text} border-2 border-black`}>

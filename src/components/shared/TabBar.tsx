@@ -12,6 +12,7 @@ const TABS: { id: Tab; label: string; icon: string }[] = [
   { id: "triage", label: "Triage", icon: "🏷" },
   { id: "health", label: "Project Health", icon: "🫀" },
   { id: "releases", label: "Release Notes", icon: "📋" },
+  { id: "duplicates", label: "Duplicates", icon: "🔍" },
 ];
 
 export function TabBar({ activeTab, onTabChange }: TabBarProps) {

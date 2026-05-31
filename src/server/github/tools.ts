@@ -44,32 +44,29 @@ function countRows(json: string): number {
   } catch { return 0; }
 }
 
-// Track the last query trace for each tool execution
-let lastTrace: QueryTrace | null = null;
-export function getLastTrace(): QueryTrace | null { return lastTrace; }
+export interface ToolResult {
+  data: string;
+  trace: QueryTrace;
+}
 
-async function runQuery(sql: string, fallback?: () => Promise<unknown>): Promise<string> {
+async function runQuery(sql: string, fallback?: () => Promise<unknown>): Promise<ToolResult> {
   const table = extractTable(sql);
   try {
     const result = await runCoralQuery(sql);
-    lastTrace = { sql, table, source: "coral", rowCount: countRows(result) };
-    return result;
+    return { data: result, trace: { sql, table, source: "coral", rowCount: countRows(result) } };
   } catch (error: unknown) {
     if (!fallback) {
-      lastTrace = { sql, table, source: "coral", rowCount: 0 };
-      return JSON.stringify({ error: errorMessage(error, "Query failed") });
+      return { data: JSON.stringify({ error: errorMessage(error, "Query failed") }), trace: { sql, table, source: "coral", rowCount: 0 } };
     }
 
     try {
       console.warn("[coral] Falling back to GitHub REST API");
       const result = JSON.stringify(await fallback());
-      lastTrace = { sql, table, source: "github-rest", rowCount: countRows(result) };
-      return result;
+      return { data: result, trace: { sql, table, source: "github-rest", rowCount: countRows(result) } };
     } catch (fallbackError: unknown) {
       const message = errorMessage(fallbackError, "GitHub fallback failed");
       console.error("[github-fallback]", message);
-      lastTrace = { sql, table, source: "github-rest", rowCount: 0 };
-      return JSON.stringify({ error: `${errorMessage(error, "Coral query failed")}; fallback: ${message}` });
+      return { data: JSON.stringify({ error: `${errorMessage(error, "Coral query failed")}; fallback: ${message}` }), trace: { sql, table, source: "github-rest", rowCount: 0 } };
     }
   }
 }
@@ -359,7 +356,7 @@ function limit(value: unknown, fallback: number, max: number): number {
 export async function executeTool(
   name: string,
   args: Record<string, unknown>
-): Promise<string> {
+): Promise<ToolResult> {
   const owner = sanitize(args.owner);
   const repo = sanitize(args.repo);
 
@@ -439,7 +436,6 @@ export async function executeTool(
       const rowLimit = limit(args.limit, 20, 50);
       const sql = `SELECT user__login, COUNT(*) as pr_count FROM github.pulls WHERE owner='${owner}' AND repo='${repo}' AND state='closed' GROUP BY user__login ORDER BY pr_count DESC LIMIT ${rowLimit}`;
       return await runQuery(sql, async () => {
-        // Fallback: fetch PRs and aggregate in JS
         const pulls = await githubFetch<GitHubPull[]>(
           `/repos/${owner}/${repo}/pulls?state=closed&sort=updated&direction=desc&per_page=100`
         );
@@ -460,7 +456,6 @@ export async function executeTool(
       const rowLimit = limit(args.limit, 20, 50);
       const sql = `SELECT user__login, COUNT(*) as issue_count FROM github.issues WHERE owner='${owner}' AND repo='${repo}' GROUP BY user__login ORDER BY issue_count DESC LIMIT ${rowLimit}`;
       return await runQuery(sql, async () => {
-        // Fallback: fetch issues and aggregate in JS
         const issues = await githubFetch<GitHubIssue[]>(
           `/repos/${owner}/${repo}/issues?state=all&sort=created&direction=desc&per_page=100`
         );
@@ -495,6 +490,6 @@ export async function executeTool(
     }
 
     default:
-      return JSON.stringify({ error: `Unknown tool: ${name}` });
+      return { data: JSON.stringify({ error: `Unknown tool: ${name}` }), trace: { sql: "", table: "unknown", source: "coral", rowCount: 0 } };
   }
 }

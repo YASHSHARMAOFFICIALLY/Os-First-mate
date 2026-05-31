@@ -68,7 +68,7 @@ export async function POST(req: NextRequest) {
         openaiMessages.push({
           role: "tool",
           tool_call_id: toolCall.id,
-          content: result,
+          content: result.data,
         });
       }
 

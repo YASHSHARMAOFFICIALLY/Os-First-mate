@@ -4,7 +4,7 @@ import { AgentStep } from "@/types/agent";
 import { errorMessage } from "@/server/errors";
 import type { ChatCompletionMessageParam } from "openai/resources/chat/completions";
 
-const MAX_ITERATIONS = 1;
+const MAX_ITERATIONS = 3;
 
 // Human-readable descriptions for each tool
 const TOOL_DESCRIPTIONS: Record<string, string> = {
@@ -70,7 +70,7 @@ export async function runAgent(
       messages.push({
         role: "tool",
         tool_call_id: toolCall.id,
-        content: result,
+        content: result.data,
       });
     }
 
@@ -135,13 +135,14 @@ export function runAgentStream(
             const args = JSON.parse(toolCall.function.arguments);
             const result = await executeTool(toolName, args);
 
-            // Send "done" step
+            // Send "done" step + trace
             send("step", { tool: toolName, description, status: "done" });
+            send("trace", { tool: toolName, ...result.trace });
 
             messages.push({
               role: "tool",
               tool_call_id: toolCall.id,
-              content: result,
+              content: result.data,
             });
           }
 

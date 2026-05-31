@@ -8,6 +8,7 @@ import { BriefPanel } from "@/features/brief/BriefPanel";
 import { TriagePanel } from "@/features/triage/TriagePanel";
 import { ContributorPanel } from "@/features/contributors/ContributorPanel";
 import { ReleasePanel } from "@/features/releases/ReleasePanel";
+import { DuplicatePanel } from "@/features/duplicates/DuplicatePanel";
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState<Tab>("brief");
@@ -59,10 +60,11 @@ export default function Dashboard() {
           </div>
         ) : (
           <>
-            {activeTab === "brief" && <BriefPanel owner={owner} repo={repo} />}
-            {activeTab === "triage" && <TriagePanel owner={owner} repo={repo} />}
-            {activeTab === "health" && <ContributorPanel owner={owner} repo={repo} />}
-            {activeTab === "releases" && <ReleasePanel owner={owner} repo={repo} />}
+            {activeTab === "brief" && <BriefPanel key={`${owner}/${repo}`} owner={owner} repo={repo} />}
+            {activeTab === "triage" && <TriagePanel key={`${owner}/${repo}`} owner={owner} repo={repo} />}
+            {activeTab === "health" && <ContributorPanel key={`${owner}/${repo}`} owner={owner} repo={repo} />}
+            {activeTab === "releases" && <ReleasePanel key={`${owner}/${repo}`} owner={owner} repo={repo} />}
+            {activeTab === "duplicates" && <DuplicatePanel key={`${owner}/${repo}`} owner={owner} repo={repo} />}
           </>
         )}
       </div>
